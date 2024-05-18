@@ -24,4 +24,12 @@ export abstract class BaseEntity<T extends BaseEntityProps> {
   set id(value: string) {
     this._id = value;
   }
+
+  static create<U extends BaseEntityProps, T extends BaseEntity<U>>(
+    this: new (props: U, id?: string) => T,
+    props: U,
+    id?: string,
+  ): T {
+    return new this(props, id);
+  }
 }
