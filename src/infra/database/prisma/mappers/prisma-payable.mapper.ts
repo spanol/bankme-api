@@ -13,8 +13,9 @@ export class PrismaPayableMapper {
   }
 
   static toDomain(payable) {
-    return new Payable({
+    return Payable.create({
       id: payable.id,
+      assignorId: payable.assignorId,
       value: payable.value,
       emissionDate: payable.emissionDate,
       assignor: payable.assignor,
