@@ -1,5 +1,5 @@
 import { Payable } from '@modules/payable/entities/payable.entity';
-import { BaseEntity } from '../base.entity';
+import { BaseEntity } from '@modules/shared/base.entity';
 
 export interface AssignorProps {
   id: string;
