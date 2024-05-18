@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
-import { AssignorModule } from './assignor/assignor.module';
-import { PayableModule } from './payable/payable.module';
+import { HttpAssignorModule } from './assignor/http-assignor.module';
+import { HttpPayableModule } from './payable/http-payable.module';
+import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [AssignorModule, PayableModule],
+  imports: [HttpAssignorModule, HttpPayableModule, UserModule],
 })
 export class HttpModule {}

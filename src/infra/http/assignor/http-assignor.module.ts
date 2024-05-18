@@ -4,4 +4,4 @@ import { AssignorController } from './controllers/assignor.controller';
 @Module({
   controllers: [AssignorController],
 })
-export class AssignorModule {}
+export class HttpAssignorModule {}

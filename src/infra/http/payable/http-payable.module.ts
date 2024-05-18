@@ -4,4 +4,4 @@ import { PayableController } from './controllers/payable.controller';
 @Module({
   controllers: [PayableController],
 })
-export class PayableModule {}
+export class HttpPayableModule {}
