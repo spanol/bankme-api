@@ -1,7 +1,6 @@
-import { BaseEntity } from '@modules/shared/base.entity';
+import { BaseEntity, BaseEntityProps } from '@modules/shared/base.entity';
 
-interface UserProps {
-  id: string;
+interface UserProps extends BaseEntityProps {
   login: string;
   password: string;
 }

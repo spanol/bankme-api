@@ -1,13 +1,13 @@
 import { Payable } from '@modules/payable/entities/payable.entity';
-import { BaseEntity } from '@modules/shared/base.entity';
+import { BaseEntity, BaseEntityProps } from '@modules/shared/base.entity';
 
-export interface AssignorProps {
-  id: string;
+export interface AssignorProps extends BaseEntityProps {
   document: string;
   email: string;
   phone: string;
   name: string;
   payables: Payable[];
+  createdAt?: Date;
 }
 
 export class Assignor extends BaseEntity<AssignorProps> {
