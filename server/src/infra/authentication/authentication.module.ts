@@ -24,6 +24,7 @@ import { AuthenticateUserService } from '@modules/user/services/authenticate-use
       inject: [ConfigService],
     }),
   ],
+  exports: [JwtModule],
   providers: [LocalStrategy, JwtStrategy, AuthenticateUserService],
 })
 export class AuthenticationModule {}

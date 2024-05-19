@@ -7,13 +7,13 @@ import { AuthenticateUserService } from '@modules/user/services/authenticate-use
 export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(private authenticateService: AuthenticateUserService) {
     super({
-      usernameField: 'email',
+      usernameField: 'login',
     });
   }
 
-  async validate(email: string, password: string) {
+  async validate(login: string, password: string) {
     const response = await this.authenticateService.execute({
-      email,
+      login,
       password,
     });
 
