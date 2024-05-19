@@ -8,6 +8,7 @@
     "allowSyntheticDefaultImports": true,
     "target": "ES2021",
     "sourceMap": true,
+    "resolveJsonModule": true,
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
@@ -21,7 +22,8 @@
       "@modules/*": ["./src/modules/*"],
       "@helpers/*": ["./src/helpers/*"],
       "@infra/*": ["./src/infra/*"],
+      "@utils/*": ["./src/utils/*"],
       "@test/*": ["./test/*"]
-  },
+    }
   }
 }
