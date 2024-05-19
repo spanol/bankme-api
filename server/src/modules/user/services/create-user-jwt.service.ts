@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../entities/user.entity';
 import { InvalidJwtProvidedException } from '../exceptions/invalid-jwt-provided.exception';
-import { Either, right, left } from 'src/types/EitherMonad';
+import { Either, right, left } from '@utils/either';
 
 type CreateUserJwtServiceResponse = Either<
   InvalidJwtProvidedException,
