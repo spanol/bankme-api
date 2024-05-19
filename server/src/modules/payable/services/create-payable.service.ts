@@ -4,7 +4,7 @@ import { AssignorRepository } from '@modules/assignor/repositories/assignor.repo
 import { CreatePayableDto } from '@infra/http/payable/dtos/create-payable.dto';
 import { Payable } from '../entities/payable.entity';
 import { Assignor } from '@modules/assignor/entities/assignor.entity';
-import { Either, left, right } from 'src/types/EitherMonad';
+import { Either, left, right } from '@utils/either';
 
 type CreatePayableServiceResponse = Either<Error, Payable>;
 
@@ -15,25 +15,21 @@ export class CreatePayableService {
     private assignorRepository: AssignorRepository,
   ) {}
 
-  async execute({
-    id,
-    value,
-    assignorId,
-    emissionDate,
-  }: CreatePayableDto): Promise<CreatePayableServiceResponse> {
+  async execute(
+    assignorId: string,
+    { value }: CreatePayableDto,
+  ): Promise<CreatePayableServiceResponse> {
     const assignor = await this.assignorRepository.findById(assignorId);
-    const formatAssignor = Assignor.create(assignor);
 
     if (!assignor) {
       left(new Error('Assignor not found'));
     }
 
     const payable = Payable.create({
-      id,
       value,
       assignorId: assignor.id,
-      assignor: formatAssignor,
-      emissionDate,
+      assignor: assignor as Assignor,
+      emissionDate: new Date().toISOString(),
     });
 
     await this.repository.create(payable);
