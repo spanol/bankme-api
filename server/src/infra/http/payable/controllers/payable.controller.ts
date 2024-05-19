@@ -12,7 +12,7 @@ export class PayableController {
   async create(@Body() body: any) {
     return {
       Payable: HttpPayableMapper.toHttp(
-        await this.createPayableService.execute(body),
+        (await this.createPayableService.execute(body)),
       ),
     };
   }
