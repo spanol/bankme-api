@@ -14,11 +14,22 @@ export class PrismaPayableRepository implements PayableRepository {
     await this.prisma.payable.create({ data });
   }
 
-  save(item: Payable): Promise<void> {
-    throw new Error('Method not implemented.');
+  async delete(itemId: string): Promise<void> {
+    await this.prisma.payable.delete({ where: { id: itemId } });
   }
 
-  findById(itemId: string): Promise<Payable> {
-    throw new Error('Method not implemented.');
+  async save(item: Payable): Promise<void> {
+    const data = PrismaPayableMapper.toPrisma(item);
+
+    await this.prisma.payable.update({
+      where: { id: item.id },
+      data,
+    });
+  }
+
+  async findById(itemId: string): Promise<Payable> {
+    const payable = this.prisma.payable.findUnique({ where: { id: itemId } });
+
+    return PrismaPayableMapper.toDomain(payable);
   }
 }

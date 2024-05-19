@@ -8,14 +8,36 @@ import { Assignor } from '@modules/assignor/entities/assignor.entity';
 export class PrismaAssignorRepository implements AssignorRepository {
   constructor(private prisma: PrismaService) {}
 
+  async delete(itemId: string): Promise<void> {
+    this.prisma.assignor.delete({ where: { id: itemId } });
+  }
+
   async create(item: Assignor): Promise<void> {
     const data = PrismaAssignorMapper.toPrisma(item);
 
     await this.prisma.assignor.create({ data });
   }
 
-  save(item: Assignor): Promise<void> {
-    throw new Error('Method not implemented.');
+  async save(item: Assignor): Promise<void> {
+    const data = PrismaAssignorMapper.toPrisma(item);
+
+    await this.prisma.assignor.update({
+      where: { id: item.id },
+      data,
+    });
+  }
+
+  async findByDocument(document: string): Promise<Assignor | null> {
+    const assignor = await this.prisma.assignor.findFirst({
+      where: { document },
+      include: { payables: true },
+    });
+
+    if (!assignor) {
+      return null;
+    }
+
+    return PrismaAssignorMapper.toDomain(assignor);
   }
 
   async findById(id: string): Promise<Assignor | null> {
