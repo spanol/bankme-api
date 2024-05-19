@@ -1,16 +1,8 @@
-import { IsUUID, IsNotEmpty, IsNumber, IsDateString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNumber } from 'class-validator';
 
 export class CreatePayableDto {
-  @IsUUID()
-  @IsNotEmpty()
-  id: string;
-
   @IsNumber()
+  @ApiProperty()
   value: number;
-
-  @IsDateString()
-  emissionDate: string;
-
-  @IsUUID()
-  assignorId: string;
 }

@@ -1,8 +1,7 @@
 import { Assignor } from '@modules/assignor/entities/assignor.entity';
-import { BaseEntity } from '@modules/shared/base.entity';
+import { BaseEntity, BaseEntityProps } from '@modules/shared/base.entity';
 
-interface PayableProps {
-  id: string;
+interface PayableProps extends BaseEntityProps {
   value: number;
   emissionDate: Date | string;
   assignor: Assignor;

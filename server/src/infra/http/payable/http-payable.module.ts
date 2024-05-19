@@ -1,13 +1,19 @@
 import { Module } from '@nestjs/common';
 import { PayableController } from './controllers/payable.controller';
-import { CreatePayableService } from '@modules/payable/services/create-payable.service';
 import { DatabaseModule } from '@infra/database/database.module';
-import { CryptoModule } from '@infra/crypto/crypto.module';
-import { AuthenticationModule } from '@infra/authentication/authentication.module';
+import { CreatePayableService } from '@modules/payable/services/create-payable.service';
+import { ReadPayableService } from '@modules/payable/services/read-payable.service';
+import { UpdatePayableService } from '@modules/payable/services/update-payable.service';
+import { DeletePayableService } from '@modules/payable/services/delete-payable.service';
 
 @Module({
-  imports: [DatabaseModule, CryptoModule, AuthenticationModule],
+  imports: [DatabaseModule],
   controllers: [PayableController],
-  providers: [CreatePayableService],
+  providers: [
+    CreatePayableService,
+    ReadPayableService,
+    UpdatePayableService,
+    DeletePayableService,
+  ],
 })
 export class HttpPayableModule {}
