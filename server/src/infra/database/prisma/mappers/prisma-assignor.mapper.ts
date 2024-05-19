@@ -1,4 +1,5 @@
 import { Assignor } from '@modules/assignor/entities/assignor.entity';
+import { Payable } from '@modules/payable/entities/payable.entity';
 import {
   Prisma,
   Assignor as PrismaAssignor,
@@ -21,12 +22,11 @@ export class PrismaAssignorMapper {
     payables?: PrismaPayable[],
   ): Assignor {
     return Assignor.create({
-      id: assignor.id,
       document: assignor.document,
       email: assignor.email,
       phone: assignor.phone,
       name: assignor.name,
-      payables: payables,
+      payables: payables as Payable[],
     });
   }
 }
