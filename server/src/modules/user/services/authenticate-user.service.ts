@@ -1,21 +1,16 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserRepository } from '../repositories/user.repository';
 import { Either, left, right } from '@utils/either';
-import { createDefaultUser } from '@helpers/CreateDefaultUser';
 
 type UserAuthRequest = Either<Error, { access_token: string }>;
 
 @Injectable()
-export class AuthenticateUserService implements OnModuleInit {
+export class AuthenticateUserService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly repository: UserRepository,
   ) {}
-
-  async onModuleInit() {
-    createDefaultUser(this.repository);
-  }
 
   async execute({
     login,
