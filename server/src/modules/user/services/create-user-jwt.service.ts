@@ -16,7 +16,10 @@ export class CreateUserJwtService {
   constructor(private jwtService: JwtService) {}
 
   async execute(user: User): Promise<CreateUserJwtServiceResponse> {
-    const payload = { sub: user.id };
+    const payload = {
+      username: user.login,
+      sub: user.id,
+    };
 
     try {
       return right({
