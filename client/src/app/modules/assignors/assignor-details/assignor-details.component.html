@@ -1,0 +1,8 @@
+<div class="container" *ngIf="assignor">
+  <div class="title">Assignor Details</div>
+  <p><strong>Name:</strong> {{ assignor.name }}</p>
+  <p><strong>Document:</strong> {{ assignor.document }}</p>
+  <p><strong>Email:</strong> {{ assignor.email }}</p>
+  <p><strong>Phone:</strong> {{ assignor.phone }}</p>
+  <button (click)="goBack()" class="button-confirm">Back</button>
+</div>
