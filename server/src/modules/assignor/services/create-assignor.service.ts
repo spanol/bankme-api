@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { AssignorRepository } from '../repositories/assignor.repository';
 import { CreateAssignorDto } from '@infra/http/assignor/dtos/create-assignor.dto';
 import { Assignor } from '../entities/assignor.entity';
-import { Either, right } from '@utils/either';
+import { Either, left, right } from '@utils/either';
 
-type CreateAssignorServiceResponse = Either<Error, Assignor>;
+type CreateAssignorServiceResponse = Either<ConflictException, Assignor>;
 @Injectable()
 export class CreateAssignorService {
   constructor(private repository: AssignorRepository) {}
@@ -27,7 +27,7 @@ export class CreateAssignorService {
       await this.repository.findByDocument(document);
 
     if (assignorAlreadyExists) {
-      return right(assignorAlreadyExists);
+      return left(new ConflictException());
     }
 
     await this.repository.create(assignor);

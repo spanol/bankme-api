@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Either, left, right } from '@utils/either';
 import { AssignorRepository } from '../repositories/assignor.repository';
 
-type DeleteAssignorServiceResponse = Either<Error, void>;
+type DeleteAssignorServiceResponse = Either<NotFoundException, void>;
 
 @Injectable()
 export class DeleteAssignorService {
@@ -12,7 +12,7 @@ export class DeleteAssignorService {
     const assignor = await this.repository.findById(id);
 
     if (!assignor) {
-      return left(new Error('Assignor not found'));
+      return left(new NotFoundException('Assignor not found'));
     }
 
     await this.repository.delete(id);
