@@ -1,0 +1,19 @@
+<form class="form" (ngSubmit)="onSubmit()">
+  <div class="title">Welcome,<br /><span>sign up to continue</span></div>
+  <input
+    type="text"
+    [(ngModel)]="credentials.login"
+    name="login"
+    placeholder="Login"
+    required
+    class="input"
+  />
+  <input
+    type="password"
+    placeholder="Password"
+    [(ngModel)]="credentials.password"
+    name="password"
+    class="input"
+  />
+  <button type="submit" class="button">Let`s go →</button>
+</form>
