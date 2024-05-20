@@ -2,8 +2,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Payable } from '../models/payable.model';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../../environments/environment.development';
+import { PayableModel } from '../../models/payable.model';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +13,7 @@ export class PayableService {
 
   constructor(private http: HttpClient) {}
 
-  createPayable(payable: Payable): Observable<any> {
+  createPayable(payable: PayableModel): Observable<any> {
     return this.http.post(this.apiUrl, payable);
   }
 
@@ -25,7 +25,7 @@ export class PayableService {
     return this.http.get(`${this.apiUrl}/${id}`);
   }
 
-  updatePayable(id: string, payable: Payable): Observable<any> {
+  updatePayable(id: string, payable: PayableModel): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, payable);
   }
 

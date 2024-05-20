@@ -1,0 +1,7 @@
+<div *ngIf="payable">
+  <p>ID: {{ payable.id }}</p>
+  <p>Value: {{ payable.value }}</p>
+  <p>Emission Date: {{ payable.emissionDate }}</p>
+  <p>Assignor ID: {{ payable.assignorId }}</p>
+  <a [routerLink]="['/assignors', payable.assignorId]">View Assignor Details</a>
+</div>

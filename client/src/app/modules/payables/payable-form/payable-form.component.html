@@ -1,0 +1,57 @@
+<!-- payables/payable-form/payable-form.component.html -->
+<form class="container" [formGroup]="payableForm" (ngSubmit)="onSubmit()">
+  <div class="title">
+    <label for="value">Value</label>
+    <input class="input" id="value" formControlName="value"
+    [ngClass]="{'error': value?.invalid && value?.touched}"
+    />
+    <span
+    class="error-message"
+      *ngIf="
+        payableForm.controls['value'].invalid &&
+        payableForm.controls['value'].touched
+      "
+    >
+      Value is required.
+    </span>
+  </div>
+
+  <div class="title">
+    <label for="assignorId">Asignor email</label>
+    <input class="input" id="assignorId" formControlName="assignorId"
+    [ngClass]="{'error': assignorId?.invalid && assignorId?.touched}"
+    />
+    <div
+    class="error-message"
+      *ngIf="
+        payableForm.controls['assignorId'].invalid &&
+        payableForm.controls['assignorId'].touched
+      "
+    >
+      Assinor document is required.
+    </div>
+  </div>
+
+  <div class="title">
+    <label for="emissionDate">Emission Date</label>
+    <input
+      class="input"
+      id="emissionDate"
+      type="date"
+      formControlName="emissionDate"
+      [ngClass]="{'error': emissionDate?.invalid && emissionDate?.touched}"
+    />
+    <div
+    class="error-message"
+      *ngIf="
+        payableForm.controls['emissionDate'].invalid &&
+        payableForm.controls['emissionDate'].touched
+      "
+    >
+      Emission Date is required.
+    </div>
+  </div>
+  <button class="button" type="submit" [disabled]="payableForm.invalid">
+    Submit
+  </button>
+</form>

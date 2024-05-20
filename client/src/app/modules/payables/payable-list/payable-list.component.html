@@ -1,0 +1,43 @@
+<ul>
+  <ng-container *ngIf="payables.length === 0; else list">
+    <div class="title">
+      <h1>No payables found</h1>
+      <button routerLink="/payables/new" class="button">
+        Add some right now!
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-template #list>
+    <div class="container">
+      <div class="list-card-header title">
+        Payables List
+
+        <button routerLink="/payables/new" class="button">Add +</button>
+      </div>
+      <div *ngFor="let payable of payables">
+        <div class="list-card" [routerLink]="['/payables', payable.id]">
+          <div>
+            {{ payable.value | currency : "BRL" }} -
+            {{ payable.emissionDate | date : "dd/MM/yyyy" }}
+          </div>
+
+          <div>
+            <button
+              class="button-sm edit"
+              (click)="editPayable($event, payable.id)"
+            >
+              Edit ✨
+            </button>
+            <button
+              class="button-sm"
+              (click)="deletePayable($event, payable.id)"
+            >
+              Delete ❌
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ul>
