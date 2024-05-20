@@ -46,10 +46,20 @@ export class PrismaAssignorRepository implements AssignorRepository {
       include: { payables: true },
     });
 
+    console.log(assignor);
+
     if (!assignor) {
       return null;
     }
 
     return PrismaAssignorMapper.toDomain(assignor);
+  }
+
+  async findAll(): Promise<Assignor[]> {
+    const assignors = await this.prisma.assignor.findMany({
+      include: { payables: true },
+    });
+
+    return assignors.map((assignor) => PrismaAssignorMapper.toDomain(assignor));
   }
 }

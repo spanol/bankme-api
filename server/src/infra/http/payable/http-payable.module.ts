@@ -5,6 +5,7 @@ import { CreatePayableService } from '@modules/payable/services/create-payable.s
 import { ReadPayableService } from '@modules/payable/services/read-payable.service';
 import { UpdatePayableService } from '@modules/payable/services/update-payable.service';
 import { DeletePayableService } from '@modules/payable/services/delete-payable.service';
+import { ReadAllPayableService } from '@modules/payable/services/read-all-payable.service';
 
 @Module({
   imports: [DatabaseModule],
@@ -12,6 +13,7 @@ import { DeletePayableService } from '@modules/payable/services/delete-payable.s
   providers: [
     CreatePayableService,
     ReadPayableService,
+    ReadAllPayableService,
     UpdatePayableService,
     DeletePayableService,
   ],

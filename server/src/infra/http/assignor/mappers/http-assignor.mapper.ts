@@ -1,12 +1,14 @@
+import { formatAssignorDocument } from '@helpers/format-assignor-document';
+import { formatAssignorPhone } from '@helpers/format-assignor-phone';
 import { Assignor } from '@modules/assignor/entities/assignor.entity';
 
 export class HttpAssignorMapper {
-  static toHttp(assignor: Assignor) {
+  static toHttp(assignor: Assignor): any {
     return {
       id: assignor.id,
-      document: assignor.document,
+      document: formatAssignorDocument(assignor.document),
       email: assignor.email,
-      phone: assignor.phone,
+      phone: formatAssignorPhone(assignor.phone),
       name: assignor.name,
       payables: assignor.payables,
     };
