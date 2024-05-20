@@ -11,10 +11,12 @@ export class PrismaUserMapper {
   }
 
   static toDomain(raw: PrimaUser | null): User | null {
-    return User.create({
-      id: raw?.id,
-      login: raw.login,
-      password: raw.password,
-    });
+    return User.create(
+      {
+        login: raw.login,
+        password: raw.password,
+      },
+      raw.id,
+    );
   }
 }

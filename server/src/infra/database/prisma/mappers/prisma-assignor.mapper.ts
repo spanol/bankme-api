@@ -21,12 +21,15 @@ export class PrismaAssignorMapper {
     assignor: PrismaAssignor,
     payables?: PrismaPayable[],
   ): Assignor {
-    return Assignor.create({
-      document: assignor.document,
-      email: assignor.email,
-      phone: assignor.phone,
-      name: assignor.name,
-      payables: payables as Payable[],
-    });
+    return Assignor.create(
+      {
+        document: assignor.document,
+        email: assignor.email,
+        phone: assignor.phone,
+        name: assignor.name,
+        payables: payables as Payable[],
+      },
+      assignor.id,
+    );
   }
 }

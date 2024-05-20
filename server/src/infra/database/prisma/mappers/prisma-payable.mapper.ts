@@ -13,12 +13,15 @@ export class PrismaPayableMapper {
   }
 
   static toDomain(payable) {
-    return Payable.create({
-      id: payable.id,
-      assignorId: payable.assignorId,
-      value: payable.value,
-      emissionDate: payable.emissionDate,
-      assignor: payable.assignor,
-    });
+    return Payable.create(
+      {
+        id: payable?.id,
+        assignorId: payable.assignorId,
+        value: payable.value,
+        emissionDate: payable.emissionDate,
+        assignor: payable.assignor,
+      },
+      payable.id,
+    );
   }
 }
