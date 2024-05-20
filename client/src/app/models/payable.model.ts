@@ -1,6 +1,6 @@
-export interface Payable {
-  id: string;
-  value: number;
-  emissionDate: string;
-  assignorId: string;
+export class PayableModel {
+  id: string = '';
+  value: number = 0;
+  emissionDate: string = '';
+  assignorId: string = '';
 }

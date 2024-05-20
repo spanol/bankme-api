@@ -1,7 +1,7 @@
-export interface Assignor {
-  id: string;
-  document: string;
-  email: string;
-  phone: string;
-  name: string;
+export class AssignorModel {
+  id: string = '';
+  document: string = '';
+  email: string = '';
+  phone: string = '';
+  name: string = '';
 }
