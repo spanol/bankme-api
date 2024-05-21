@@ -1,5 +1,6 @@
 <form class="container" (ngSubmit)="onSubmit()">
-  <div class="title">Welcome,<br /><span>sign up to continue</span></div>
+  <div class="title">Welcome,
+  <span>sign up to continue</span></div>
   <input
     type="text"
     [(ngModel)]="credentials.login"
@@ -13,6 +14,7 @@
     placeholder="Password"
     [(ngModel)]="credentials.password"
     name="password"
+    required
     class="input"
   />
   <button type="submit" class="button">Let`s go →</button>
