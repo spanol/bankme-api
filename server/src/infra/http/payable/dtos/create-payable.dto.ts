@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
+import { IsDateString, IsEmail, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CreatePayableDto {
   @IsNumber()
@@ -8,10 +8,14 @@ export class CreatePayableDto {
   value: number;
 
   @ApiProperty()
+  @IsNotEmpty()
+  @IsDateString()
   emissionDate: string;
 
   @ApiProperty()
-  @IsNotEmpty()
-  @IsUUID()
-  assignorId: string;
+  assignorDocument?: string;
+
+  @ApiProperty()
+  @IsEmail()
+  assignorEmail?: string;
 }

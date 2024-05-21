@@ -28,11 +28,14 @@ export class PrismaPayableRepository implements PayableRepository {
   }
 
   async findAll(): Promise<Payable[]> {
-    const payables = this.prisma.payable.findMany({
+    const payables = await this.prisma.payable.findMany({
       include: { assignor: true },
     });
+    console.log(payables);
 
-    return (await payables).map(PrismaPayableMapper.toDomain);
+    return payables.map((payable) =>
+      PrismaPayableMapper.toDomain(payable, payable.assignor),
+    );
   }
 
   async findById(itemId: string): Promise<Payable> {
@@ -43,6 +46,6 @@ export class PrismaPayableRepository implements PayableRepository {
 
     console.log(payable);
 
-    return PrismaPayableMapper.toDomain(payable);
+    return PrismaPayableMapper.toDomain(payable, payable.assignor);
   }
 }
