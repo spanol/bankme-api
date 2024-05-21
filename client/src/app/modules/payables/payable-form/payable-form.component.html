@@ -1,56 +1,62 @@
-<!-- payables/payable-form/payable-form.component.html -->
 <form class="container" [formGroup]="payableForm" (ngSubmit)="onSubmit()">
-  <div class="title">
+  <h1 class="title">Add payable</h1>
+  <div class="input-wrapper">
     <label for="value">Value</label>
-    <input class="input" id="value" formControlName="value"
-    [ngClass]="{'error': value?.invalid && value?.touched}"
+    <input
+      class="input"
+      id="value"
+      type="tel"
+      currencyMask
+      formControlName="value"
+      [ngClass]="{ error: value.invalid && value.touched }"
+      [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', align: 'left' }"
     />
-    <span
-    class="error-message"
-      *ngIf="
-        payableForm.controls['value'].invalid &&
-        payableForm.controls['value'].touched
-      "
-    >
-      Value is required.
-    </span>
-  </div>
 
-  <div class="title">
-    <label for="assignorId">Asignor email</label>
-    <input class="input" id="assignorId" formControlName="assignorId"
-    [ngClass]="{'error': assignorId?.invalid && assignorId?.touched}"
-    />
     <div
-    class="error-message"
-      *ngIf="
-        payableForm.controls['assignorId'].invalid &&
-        payableForm.controls['assignorId'].touched
-      "
+      class="error-message"
+      *ngIf="value.invalid && (value.dirty || value.touched)"
     >
-      Assinor document is required.
+      <span *ngIf="value.errors?.['required']">Value is required.</span>
+      <span *ngIf="value.errors?.['min']">Value must be a positive value.</span>
     </div>
   </div>
 
-  <div class="title">
+  <div class="input-wrapper">
+    <label for="email">Assignor email</label>
+    <input
+      class="input"
+      id="email"
+      formControlName="email"
+      [ngClass]="{ error: email.invalid && email.touched }"
+    />
+    <div class="error-message" *ngIf="email.invalid && email.touched">
+      <span *ngIf="email.errors?.['required']">Email is required.</span>
+      <span *ngIf="email.errors?.['email']">Email is invalid.</span>
+    </div>
+  </div>
+
+  <div class="input-wrapper">
     <label for="emissionDate">Emission Date</label>
     <input
       class="input"
       id="emissionDate"
       type="date"
       formControlName="emissionDate"
-      [ngClass]="{'error': emissionDate?.invalid && emissionDate?.touched}"
+      [ngClass]="{ error: emissionDate.invalid && emissionDate.touched }"
     />
     <div
-    class="error-message"
-      *ngIf="
-        payableForm.controls['emissionDate'].invalid &&
-        payableForm.controls['emissionDate'].touched
-      "
+      class="error-message"
+      *ngIf="emissionDate.invalid && emissionDate.touched"
     >
-      Emission Date is required.
+      <span *ngIf="emissionDate.errors?.['required']"
+        >Emission Date is required.</span
+      >
+      <span *ngIf="emissionDate.errors?.['min']"
+        >Emission Date must be a valid date.</span
+      >
     </div>
   </div>
+
   <button class="button" type="submit" [disabled]="payableForm.invalid">
     Submit
   </button>
