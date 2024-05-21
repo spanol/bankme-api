@@ -1,11 +1,11 @@
-import { Assignor } from '@modules/assignor/entities/assignor.entity';
 import { BaseEntity, BaseEntityProps } from '@modules/shared/base.entity';
+import { Assignor } from '@prisma/client';
 
 interface PayableProps extends BaseEntityProps {
   value: number;
   emissionDate: Date | string;
-  assignor: Assignor;
   assignorId: string;
+  assignor?: Assignor;
 }
 
 export class Payable extends BaseEntity<PayableProps> {
@@ -37,19 +37,19 @@ export class Payable extends BaseEntity<PayableProps> {
     this.props.emissionDate = date;
   }
 
-  get assignor(): Assignor {
-    return this.props.assignor;
-  }
-
-  set assignor(value: Assignor) {
-    this.props.assignor = value;
-  }
-
   get assignorId(): string {
     return this.props.assignorId;
   }
 
   set assignorId(value: string) {
     this.props.assignorId = value;
+  }
+
+  get assignor(): Assignor {
+    return this.props.assignor;
+  }
+
+  set assignor(value: Assignor) {
+    this.props.assignor = value;
   }
 }

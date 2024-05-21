@@ -23,11 +23,12 @@ export class CreateAssignorService {
       phone,
     });
 
-    const assignorAlreadyExists =
-      await this.repository.findByDocument(document);
+    const assignorAlreadyExists = await this.repository.findByEmail(email);
 
     if (assignorAlreadyExists) {
-      return left(new ConflictException());
+      return left(
+        new ConflictException('Assignor with this email already exists.'),
+      );
     }
 
     await this.repository.create(assignor);
