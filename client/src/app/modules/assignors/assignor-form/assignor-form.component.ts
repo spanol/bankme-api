@@ -27,10 +27,10 @@ export class AssignorFormComponent {
 
   ngOnInit() {
     this.assignorForm = this.fb.group({
-      name: ['', Validators.required],
-      document: ['', Validators.required],
-      email: ['', Validators.required],
-      phone: ['', Validators.required],
+      name: ['', [Validators.required, Validators.maxLength(140)]],
+      document: ['', [Validators.required, Validators.maxLength(30)]],
+      email: ['', [Validators.required, Validators.email, Validators.maxLength(140)]],
+      phone: ['', [Validators.required, Validators.maxLength(20)]],
     });
   }
 
