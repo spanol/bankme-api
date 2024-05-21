@@ -1,6 +1,9 @@
+import { AssignorModel } from './assignor.model';
+
 export class PayableModel {
   id: string = '';
   value: number = 0;
   emissionDate: string = '';
-  assignorId: string = '';
+  assignorEmail: string = '';
+  assignor: AssignorModel = {} as AssignorModel;
 }
