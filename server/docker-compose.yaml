@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  app:
+    image: meu-app:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    command: >
+      sh -c "
+      npx prisma migrate dev --name 'initial migration' &&
+      npm run seed &&
+      npm start
+      "
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - sqlite-data:/app/prisma
+
+volumes:
+  sqlite-data:
