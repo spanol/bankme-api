@@ -27,8 +27,4 @@ export class AssignorListComponent implements OnInit {
     });
   }
 
-  viewDetails(id: string) {
-    console.log(id)
-    this.router.navigate(['/assignors', id]);
-  }
 }

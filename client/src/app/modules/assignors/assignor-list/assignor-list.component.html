@@ -18,7 +18,7 @@
       </div>
         <div class="list-card"
           *ngFor="let assignor of assignors"
-          (click)="viewDetails(assignor.id)"
+          routerLink="/assignors/{{ assignor.id }}"
         >
           {{ assignor.name }} ({{ assignor.document }})
         </div>
