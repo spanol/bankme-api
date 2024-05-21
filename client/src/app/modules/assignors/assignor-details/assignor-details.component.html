@@ -1,8 +1,22 @@
 <div class="container" *ngIf="assignor">
   <div class="title">Assignor Details</div>
-  <p><strong>Name:</strong> {{ assignor.name }}</p>
-  <p><strong>Document:</strong> {{ assignor.document }}</p>
-  <p><strong>Email:</strong> {{ assignor.email }}</p>
-  <p><strong>Phone:</strong> {{ assignor.phone }}</p>
-  <button (click)="goBack()" class="button-confirm">Back</button>
+  <div *ngIf="assignor" class="info-wrapper">
+    <p><strong>Name:</strong> {{ assignor.name }}</p>
+    <p><strong>Document:</strong> {{ assignor.document | document }}</p>
+    <p><strong>Email:</strong> {{ assignor.email }}</p>
+    <p><strong>Phone:</strong> {{ assignor.phone | phone }}</p>
+
+    <ng-container *ngIf="assignor.payables && assignor.payables.length > 0">
+      <div class="payables-wrapper">
+        <div class="title">Payables</div>
+        <div *ngFor="let payable of assignor.payables" class="payable">
+          <div class="list-card">
+            <p><strong>Value:</strong> {{ payable.value | currency: 'BRL' }}</p>
+            <p><strong>Emission Date:</strong> {{ payable.emissionDate | date: 'dd/MM/yyyy' }}</p>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <button class="button" (click)="goBack()">Back</button>
+  </div>
 </div>

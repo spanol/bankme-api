@@ -1,16 +1,18 @@
 // assignors/assignor-detail/assignor-detail.component.ts
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AssignorService } from '../assignor.service';
 import { AssignorModel } from '../../../models/assignor.model';
 import { CommonModule } from '@angular/common';
+import { PhonePipe } from '../../../pipes/phone.pipe';
+import { DocumentPipe } from '../../../pipes/document.pipe';
 
 @Component({
   selector: 'app-assignor-detail',
   templateUrl: './assignor-details.component.html',
   styleUrls: ['./assignor-details.component.scss'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, PhonePipe, DocumentPipe],
 })
 export class AssignorDetailsComponent implements OnInit {
   assignor: AssignorModel = {} as AssignorModel;
@@ -26,6 +28,7 @@ export class AssignorDetailsComponent implements OnInit {
     if (id) {
       this.assignorService.getAssignorById(id).subscribe(data => {
         this.assignor = data;
+        console.log(this.assignor);
       });
     }
   }
