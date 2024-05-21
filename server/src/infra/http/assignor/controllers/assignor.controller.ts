@@ -8,7 +8,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateAssignorDto } from '../dtos/create-assignor.dto';
 import { UpdateAssignorService } from './../../../../modules/assignor/services/update-assignor.service';
 import { CreateAssignorService } from '@modules/assignor/services/create-assignor.service';
@@ -21,6 +21,7 @@ import { Assignor } from '@modules/assignor/entities/assignor.entity';
 
 @Controller('integrations/assignor')
 @ApiTags('Assignor')
+@UseGuards(JwtAuthGuard)
 export class AssignorController {
   constructor(
     private createAssignorService: CreateAssignorService,
@@ -31,8 +32,6 @@ export class AssignorController {
   ) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth('jwt')
   @ApiResponse({ status: 201, description: 'Assignor created.' })
   async create(@Body() body: CreateAssignorDto): Promise<any> {
     const result = await this.createAssignorService.execute(body);
@@ -45,8 +44,9 @@ export class AssignorController {
   }
 
   @Get(':id')
+  @ApiResponse({ status: 200, description: 'Assignor found.' })
+  @ApiResponse({ status: 404, description: 'Assignor not found.' })
   async findById(@Param('id') id: string) {
-    console.log(id);
     const result = await this.readAssignorService.execute(id);
 
     console.log(result);
@@ -59,6 +59,8 @@ export class AssignorController {
   }
 
   @Get()
+  @ApiResponse({ status: 200, description: 'Assignors found.' })
+  @ApiResponse({ status: 404, description: 'Assignors not found.' })
   async findAll() {
     const result = await this.readAllAssignorService.execute();
 
@@ -72,8 +74,8 @@ export class AssignorController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth('jwt')
+  @ApiResponse({ status: 200, description: 'Assignor deleted.' })
+  @ApiResponse({ status: 404, description: 'Assignor not found.' })
   async delete(@Param('id') id: string) {
     const result = await this.deleteAssignorService.execute(id);
 
@@ -85,8 +87,8 @@ export class AssignorController {
   }
 
   @Patch(':id')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth('jwt')
+  @ApiResponse({ status: 200, description: 'Assignor updated.' })
+  @ApiResponse({ status: 404, description: 'Assignor not found.' })
   async update(@Param('id') id: string, @Body() body: CreateAssignorDto) {
     const result = await this.updateAssignorService.execute(id, body);
 

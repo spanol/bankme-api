@@ -40,6 +40,39 @@ export class PrismaAssignorRepository implements AssignorRepository {
     return PrismaAssignorMapper.toDomain(assignor);
   }
 
+  async findByEmailOrDocument(
+    email?: string,
+    document?: string,
+  ): Promise<Assignor | null> {
+    const entity = this.prisma.assignor.findFirst({
+      where: {
+        OR: [
+          { email: email || undefined },
+          { document: document || undefined },
+        ],
+      },
+    });
+
+    if (!entity) {
+      return null;
+    }
+
+    return PrismaAssignorMapper.toDomain(entity as unknown as Assignor);
+  }
+
+  async findByEmail(email: string): Promise<Assignor | null> {
+    const assignor = await this.prisma.assignor.findFirst({
+      where: { email },
+      include: { payables: true },
+    });
+
+    if (!assignor) {
+      return null;
+    }
+
+    return PrismaAssignorMapper.toDomain(assignor);
+  }
+
   async findById(id: string): Promise<Assignor | null> {
     const assignor = await this.prisma.assignor.findUnique({
       where: { id },
@@ -52,7 +85,7 @@ export class PrismaAssignorRepository implements AssignorRepository {
       return null;
     }
 
-    return PrismaAssignorMapper.toDomain(assignor);
+    return PrismaAssignorMapper.toDomain(assignor, assignor.payables);
   }
 
   async findAll(): Promise<Assignor[]> {
