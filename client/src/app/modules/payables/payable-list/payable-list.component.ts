@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PayableService } from '../payable.service';
-import { PayablesModule } from '../payables.module';
 import { PayableModel } from '../../../models/payable.model';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -15,22 +14,18 @@ import { CommonModule } from '@angular/common';
 export class PayableListComponent implements OnInit {
   payables: PayableModel[] = [];
 
-  constructor(private payableService: PayableService) {}
+  constructor(private payableService: PayableService, private router: Router) {}
 
   ngOnInit() {
     this.payableService.getPayables().subscribe((data) => {
       this.payables = data;
-      console.log(data);
     });
   }
 
   editPayable(ev: Event, id: string) {
     ev.stopPropagation();
 
-    this.payableService.getPayableById(id).subscribe((payable) => {
-      console.log(payable);
-    });
-    // Implementar lógica de edição
+    this.router.navigate(['payables', 'edit', id]);
   }
 
   deletePayable(ev: Event,id: string) {

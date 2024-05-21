@@ -1,0 +1,46 @@
+
+.action-buttons{
+  display: flex;
+}
+
+.list-card{
+  padding-top: 0;
+  padding-right: 0;
+}
+
+.button-sm{
+  cursor: pointer;
+  border: 1px solid var(--main-color);
+  padding-right: 10px;
+  background-color: var(--bg-color);
+  color: var(--font-color);
+  border-radius: 5px;
+  text-wrap: nowrap;
+  height: 40px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.button-sm.edit{
+  border-radius: 5px 0 0 5px;
+}
+
+.button-sm.delete{
+  border-radius: 0 5px 5px 0;
+}
+
+.button-sm.edit:hover{
+  background-color: yellow;
+}
+
+
+.button-sm.delete:hover{
+  background-color: red;
+}
+
+.payable-data{
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

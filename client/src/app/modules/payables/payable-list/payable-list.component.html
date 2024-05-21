@@ -17,20 +17,22 @@
       </div>
       <div *ngFor="let payable of payables">
         <div class="list-card" [routerLink]="['/payables', payable.id]">
-          <div>
+          <div class="payable-data">
             {{ payable.value | currency : "BRL" }} -
             {{ payable.emissionDate | date : "dd/MM/yyyy" }}
+            assignor: {{ payable.assignor.name }}
+
           </div>
 
-          <div>
+          <div class="action-buttons">
             <button
               class="button-sm edit"
               (click)="editPayable($event, payable.id)"
             >
-              Edit ✨
+              Edit ✏️
             </button>
             <button
-              class="button-sm"
+              class="button-sm delete"
               (click)="deletePayable($event, payable.id)"
             >
               Delete ❌
