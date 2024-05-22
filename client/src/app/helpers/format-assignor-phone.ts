@@ -1,5 +1,8 @@
 export const formatPhoneNumber = (phone: string): string => {
-  phone = phone.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+  phone = phone?.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+
+  if (!phone || phone.length < 10 || phone.length > 11)
+    return 'Número inválido';
 
   if (phone.length === 10) {
     // Formato para números fixos: (XX) XXXX-XXXX

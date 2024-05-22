@@ -1,7 +1,10 @@
 export const formatAssignorDocument = (document: string, hideSome: boolean = false): string => {
   let formattedValue = document;
 
-  if(document.length > 14 || document.length < 11) return 'Documento inválido';
+  if(
+    !document ||
+    document?.length > 14 ||
+     document?.length < 11) return 'Documento inválido';
 
   if (document.length === 11) {
     // Formatar CPF
