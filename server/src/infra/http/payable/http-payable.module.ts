@@ -8,6 +8,8 @@ import { DeletePayableService } from '@modules/payable/services/delete-payable.s
 import { ReadAllPayableService } from '@modules/payable/services/read-all-payable.service';
 import { CreatePayableBatchService } from '../../../modules/payable/services/create-payable-batch.service';
 import { RabbitMQModule } from '../rabbitmq/rabbitmq.module';
+import { PayableConsumerService } from '@modules/payable/services/payable-consumer.service';
+import { RabbitMQService } from '../rabbitmq/rabbitmq.service';
 
 @Module({
   imports: [DatabaseModule, RabbitMQModule],
@@ -17,8 +19,10 @@ import { RabbitMQModule } from '../rabbitmq/rabbitmq.module';
     ReadPayableService,
     CreatePayableBatchService,
     ReadAllPayableService,
+    PayableConsumerService,
     UpdatePayableService,
     DeletePayableService,
+    RabbitMQService,
   ],
 })
 export class HttpPayableModule {}
