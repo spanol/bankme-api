@@ -1,25 +1,101 @@
+# version: '3.8'
+
+# services:
+#   rabbitmq:
+#     image: rabbitmq:3-management
+#     container_name: 'rabbitmq'
+#     command: rabbitmq-server
+#     volumes:
+#       - rabbitmq-data:/var/lib/rabbitmq
+#       - rabbitmq-log:/var/log/rabbitmq
+#     expose:
+#       - "5672"
+#       - "15672"
+#     healthcheck:
+#         test: ["CMD", "rabbitmqctl", "status"]
+#         interval: 10s
+#         timeout: 10s
+#         retries: 5
+#     networks:
+#       - server
+
+#   app:
+#     image: spanol/server
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#     depends_on:
+#       rabbitmq:
+#         condition: service_healthy
+#     env_file:
+#       - .env
+#     restart: 
+#       on-failure
+#     expose:
+#       - "3000"
+#     volumes:
+#       - .:/app
+#       - /app/node_modules
+#       - sqlite-data:/app/prisma
+#     networks:
+#       - server
+
+# volumes:
+#   sqlite-data:
+#   rabbitmq-data:
+#   rabbitmq-log:
+
+# networks:
+#   server:
+#     driver: bridge
+
 version: '3.8'
 
 services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: 'rabbitmq'
+    command: rabbitmq-server
+    hostname: rabbitmq
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+      - rabbitmq-log:/var/log/rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    networks:
+      - rabbitmq-network
+
   app:
-    image: meu-app:latest
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: 'app'
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    env_file:
+      - .env
+    restart: on-failure
     ports:
       - "3000:3000"
-    environment:
-      - NODE_ENV=development
-    command: >
-      sh -c "
-      npx prisma migrate dev --name 'initial migration' &&
-      npm run seed &&
-      npm start
-      "
     volumes:
       - .:/app
       - /app/node_modules
       - sqlite-data:/app/prisma
+    networks:
+      - rabbitmq-network
 
 volumes:
   sqlite-data:
+  rabbitmq-data:
+  rabbitmq-log:
+
+networks:
+  rabbitmq-network:
+    external: true

@@ -3,9 +3,9 @@
 Thumbs.db
 
 # Ignore development and build artifacts
-node_modules/
-dist/
-build/
+node_modules
+dist
+build
 *.log
 
 # Ignore version control files and directories
