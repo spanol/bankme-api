@@ -37,18 +37,6 @@ export class AuthService {
     }
   }
 
-  getUserId(): string | null {
-    const token = localStorage.getItem('token');
-    if (!token) return null;
-
-    try {
-      const { sub } = JSON.parse(token);
-      return sub;
-    } catch (error) {
-      return null;
-    }
-  }
-
   getToken(): string | null {
     const token = localStorage.getItem('token');
     if (!token) return null;
