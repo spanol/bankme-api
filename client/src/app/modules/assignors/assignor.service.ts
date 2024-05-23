@@ -26,7 +26,7 @@ export class AssignorService {
   }
 
   updateAssignor(id: string, assignor: AssignorModel): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, assignor);
+    return this.http.patch(`${this.apiUrl}/${id}`, assignor);
   }
 
   deleteAssignor(id: string): Observable<any> {
