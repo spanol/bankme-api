@@ -49,8 +49,6 @@ export class AssignorController {
   async findById(@Param('id') id: string) {
     const result = await this.readAssignorService.execute(id);
 
-    console.log(result);
-
     if (result.isLeft()) {
       return result.value;
     }
