@@ -1,0 +1,10 @@
+.no-hover
+{
+  pointer-events: none;
+}
+
+.action-buttons{
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+}

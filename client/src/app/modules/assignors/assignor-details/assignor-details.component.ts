@@ -16,21 +16,35 @@ import { DocumentPipe } from '../../../pipes/document.pipe';
 })
 export class AssignorDetailsComponent implements OnInit {
   assignor: AssignorModel = {} as AssignorModel;
+  payable: any;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private assignorService: AssignorService
-  ) {}
+  ) {
+    document.title = 'Assignor - Details';
+  }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.assignorService.getAssignorById(id).subscribe(data => {
+      this.assignorService.getAssignorById(id).subscribe((data) => {
         this.assignor = data;
-        console.log(this.assignor);
       });
     }
+  }
+
+  editAssignor($event: MouseEvent, id: string) {
+    $event.stopPropagation();
+    this.router.navigate(['/assignors/edit', id]);
+  }
+
+  deleteAssignor($event: MouseEvent, id: string) {
+    $event.stopPropagation();
+    this.assignorService.deleteAssignor(id).subscribe(() => {
+      this.router.navigate(['/assignors']);
+    });
   }
 
   goBack() {
