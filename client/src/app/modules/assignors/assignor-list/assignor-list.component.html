@@ -17,10 +17,13 @@
         </button>
       </div>
         <div class="list-card"
-          *ngFor="let assignor of assignors"
+          *ngFor="let assignor of assignors
+            | paginate : { itemsPerPage: 10, currentPage: actualPage }
+          "
           routerLink="/assignors/{{ assignor.id }}"
         >
           {{ assignor.name }} ({{ assignor.document }})
         </div>
       </div>
+    <pagination-controls (pageChange)="actualPage = $event"></pagination-controls>
   </ng-template>
