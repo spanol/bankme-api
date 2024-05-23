@@ -10,8 +10,8 @@
           <strong>Assignor Document: </strong> {{ payable.assignor.document | document }}
         </p>
         <p><strong>Assignor Name: </strong> {{ payable.assignor.name }}</p>
-        <a routerLink="/assignors/{{ payable.assignor.id }}"
-          >View Assignor Details</a
+        <button class="button button-sm view-assignor" routerLink="/assignors/{{ payable.assignor.id }}"
+          >View Assignor Details</button
         >
       </div>
     </ng-container>

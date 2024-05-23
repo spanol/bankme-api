@@ -19,7 +19,9 @@ export class PayableDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private payableService: PayableService
-  ) {}
+  ) {
+    document.title = 'Payable - Details';
+  }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
