@@ -7,7 +7,7 @@ import {
 } from '@prisma/client';
 
 export class PrismaAssignorMapper {
-  static toPrisma(assignor): Prisma.AssignorUncheckedCreateInput {
+  static toPrisma(assignor: Assignor): Prisma.AssignorUncheckedCreateInput {
     return {
       id: assignor.id,
       document: assignor.document,
