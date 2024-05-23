@@ -12,8 +12,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-      - name: Setup .env File
-        run: cp ./server/.env
       - name: Login to Docker Hub
         uses: docker/login-action@v1
         with:
@@ -44,12 +42,12 @@ jobs:
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
             # Navegue para o diretório onde docker-compose.yml está localizado
-            cd /server
+            cd ~/server
             # Puxe as últimas imagens
             sudo docker-compose pull
             # Derrube os containers atuais e remova volumes
             sudo docker-compose down --volumes --remove-orphans
             # Inicie os containers com as novas imagens
-            sudo docker-compose up -d --build
+            sudo docker-compose up -d
             # Remova as imagens não utilizadas
             sudo docker image prune -f
