@@ -6,4 +6,5 @@ export class PayableModel {
   emissionDate: string = '';
   assignorEmail: string = '';
   assignor: AssignorModel = {} as AssignorModel;
+  assignorId: string = '';
 }
