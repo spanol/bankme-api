@@ -10,16 +10,19 @@ import {
 } from '@angular/forms';
 import { PayableService } from '../payable.service';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgFor } from '@angular/common';
 import { NgxCurrencyDirective } from 'ngx-currency';
+import { AssignorService } from '../../assignors/assignor.service';
+import { AssignorModel } from '../../../models/assignor.model';
 
 @Component({
   selector: 'app-payable-form',
   standalone: true,
   imports: [
+    CommonModule,
+    NgFor,
     ReactiveFormsModule,
     FormsModule,
-    CommonModule,
     NgxCurrencyDirective,
   ],
   templateUrl: './payable-form.component.html',
@@ -27,19 +30,41 @@ import { NgxCurrencyDirective } from 'ngx-currency';
 })
 export class PayableFormComponent {
   payableForm: FormGroup = new FormGroup({});
+  assignors: AssignorModel[] = [];
 
   constructor(
     private fb: FormBuilder,
     private payableService: PayableService,
+    private assignorService: AssignorService,
     private router: Router,
     private alertsService: AlertsService
-  ) {}
+  ) {
+    document.title = 'Payable - Creation';
+  }
 
   ngOnInit() {
     this.payableForm = this.fb.group({
       value: ['', [Validators.required, Validators.min(0)]],
       emissionDate: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
+      assignorId: ['', Validators.required],
+      // email: ['', [Validators.required, Validators.email]],
+    });
+
+    this.payableForm.patchValue({
+      emissionDate: new Date().toISOString().split('T')[0],
+      assignorId: '0',
+    })
+
+
+    this.assignorService.getAssignors().subscribe({
+      next: (response) => {
+        this.assignors = response;
+        console.log(response);
+      },
+      error: (error) => {
+        console.error(error);
+        this.alertsService.error('Error', 'Assignors not found');
+      },
     });
   }
 
@@ -49,16 +74,20 @@ export class PayableFormComponent {
   get emissionDate() {
     return this.payableForm.controls['emissionDate'];
   }
+  get assignorId() {
+    return this.payableForm.controls['assignorId'];
+  }
   get email() {
     return this.payableForm.controls['email'];
   }
 
-  onSubmit() {
-    // grant value is nuber
-    
+    onCancel() {
+    this.payableForm.reset();
+    this.router.navigate(['/payables']);
+  }
 
+  onSubmit() {
     const formValues = this.payableForm.value;
-    formValues.value = formValues.value.replace(',', '.');
 
     if (isNaN(this.payableForm.value.value)) {
       this.alertsService.error('Error', 'Value must be a number');
@@ -66,15 +95,15 @@ export class PayableFormComponent {
     }
 
     const entity = new PayableModel();
-    entity.value = this.payableForm.value.value;
-    entity.emissionDate = this.payableForm.value.emissionDate;
-    entity.assignorEmail = this.payableForm.value.email;
+    entity.value = formValues.value;
+    entity.emissionDate = formValues.emissionDate;
+    entity.assignorEmail = formValues.email;
+    entity.assignorId = formValues.assignorId;
 
     this.payableService.createPayable(entity).subscribe({
       next: (response) => {
-        console.log(response);
         this.alertsService.success('Success', 'Payable created');
-        this.router.navigate(['/payables']);
+        this.router.navigate(['/payables' + response.id]);
       },
 
       error: (error) => {

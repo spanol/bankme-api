@@ -1,5 +1,6 @@
 <form class="container" [formGroup]="payableForm" (ngSubmit)="onSubmit()">
   <h1 class="title">Add payable</h1>
+
   <div class="input-wrapper">
     <label for="value">Value</label>
     <input
@@ -22,16 +23,16 @@
   </div>
 
   <div class="input-wrapper">
-    <label for="email">Assignor email</label>
-    <input
-      class="input"
-      id="email"
-      formControlName="email"
-      [ngClass]="{ error: email.invalid && email.touched }"
-    />
-    <div class="error-message" *ngIf="email.invalid && email.touched">
-      <span *ngIf="email.errors?.['required']">Email is required.</span>
-      <span *ngIf="email.errors?.['email']">Email is invalid.</span>
+    <label for="assignorId">Assignor</label>
+    <select formControlName="assignorId" class="input select-assignor">
+      <option selected value="0">Select assignor...</option>
+      <ng-container *ngFor="let assignor of assignors">
+        <option [value]="assignor.id">{{ assignor.name }}</option>
+      </ng-container>
+    </select>
+
+    <div class="error-message" *ngIf="assignorId.invalid && assignorId.touched">
+      <span *ngIf="assignorId.errors?.['required']">Assignor is required.</span>
     </div>
   </div>
 
@@ -57,7 +58,10 @@
     </div>
   </div>
 
-  <button class="button" type="submit" [disabled]="payableForm.invalid">
-    Submit
-  </button>
+  <div class="button-wrapper">
+    <button class="button" type="button" (click)="onCancel()">Cancel</button>
+    <button class="button" type="submit" [disabled]="payableForm.invalid">
+      Submit
+    </button>
+  </div>
 </form>
