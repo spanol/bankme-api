@@ -15,13 +15,23 @@
 
         <button routerLink="/payables/new" class="button">Add +</button>
       </div>
-      <div *ngFor="let payable of payables">
+      <!-- add in mass -->
+      <div class="list-card-header">
+        <button class="button">Add in mass</button>
+      </div>
+      <ng-container
+        *ngFor="
+          let payable of payables
+            | paginate : { itemsPerPage: 10, currentPage: actualPage }
+        "
+      >
         <div class="list-card" [routerLink]="['/payables', payable.id]">
           <div class="payable-data">
-            {{ payable.value | currency : "BRL" }} -
-            {{ payable.emissionDate | date : "dd/MM/yyyy" }}
-            assignor: {{ payable.assignor.name }}
-
+            <p>id: {{ payable.id }}</p>
+            <div class="payable-info">
+              <p>{{ payable.value | currency : "BRL" }} -
+              {{ payable.emissionDate | date : "dd/MM/yyyy" }}</p> 
+            </div>
           </div>
 
           <div class="action-buttons">
@@ -39,7 +49,10 @@
             </button>
           </div>
         </div>
-      </div>
+      </ng-container>
     </div>
+    <pagination-controls
+      (pageChange)="actualPage = $event"
+    ></pagination-controls>
   </ng-template>
 </ul>
