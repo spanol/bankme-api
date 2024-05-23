@@ -15,9 +15,9 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Build Docker Image
-        run: docker build -t spanol/bankme/server ./server
+        run: docker build -t server ./server
       - name: Push Docker Image
-        run: docker push spanol/bankme/server
+        run: docker push server
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -35,6 +35,6 @@ jobs:
           if sudo docker ps -a -q | grep -q .; then \\
             sudo docker rm $(sudo docker ps -a -q); \\
           fi && \\
-          sudo docker pull spanol/bankme/server && \\
-          sudo docker run -d -p 80:80 spanol/bankme/server && \\
+          sudo docker pull spanol/server && \\
+          sudo docker run -d -p 80:80 spanol/server && \\
           sudo docker image prune -f'
