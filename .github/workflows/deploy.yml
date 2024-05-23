@@ -42,7 +42,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
             # Navegue para o diretório onde docker-compose.yml está localizado
-            cd /caminho/para/seu/projeto/server
+            cd /server
             # Puxe as últimas imagens
             sudo docker-compose pull
             # Derrube os containers atuais e remova volumes
