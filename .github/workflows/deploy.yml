@@ -17,4 +17,24 @@ jobs:
       - name: Build Docker Image
         run: docker build -t bankme/server ./server
         - name: Push Docker Image
-        run: docker push spanol/bankme/server # replace your-username with your Docker Hub username
+        run: docker push spanol/bankme/server
+        deploy:
+          needs: build
+          runs-on: ubuntu-latest
+          steps:
+            - name: Install SSH key
+              uses: webfactory/ssh-agent@v0.9.0
+              with:
+                ssh-private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+            - name: Deploy to EC2 
+              run: |
+                ssh -o StrictHostKeyChecking=no ec2-user@ec2-13-59-11-229.us-east-2.compute.amazonaws.com \\
+                'if sudo docker ps -q --filter "status=running" | grep -q .; then \\
+                  sudo docker stop $(sudo docker ps -q --filter "status=running"); \\
+                fi && \\
+                if sudo docker ps -a -q | grep -q .; then \\
+                  sudo docker rm $(sudo docker ps -a -q); \\
+                fi && \\
+                sudo docker pull spanol/bankme/server && \\
+                sudo docker run -d -p 80:80 spanol/bankme/server && \\
+                sudo docker image prune -f'
