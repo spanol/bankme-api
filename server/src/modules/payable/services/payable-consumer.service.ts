@@ -2,6 +2,7 @@ import { RabbitMQService } from '@infra/http/rabbitmq/rabbitmq.service';
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import { PayableRepository } from '../repositories/payable.repository';
+import { Payable } from '../entities/payable.entity';
 
 @Injectable()
 export class PayableConsumerService implements OnModuleInit {
@@ -28,7 +29,6 @@ export class PayableConsumerService implements OnModuleInit {
         emissionDate: new Date(content.emissionDate),
         assignorId: content.assignorId,
       } as any);
-
       this.rabbitMQService.ack(msg);
     } catch (error) {
       const retryCount = (msg.properties.headers['x-death'] || []).length;
