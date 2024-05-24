@@ -1,27 +1,16 @@
-# FROM node:lts-alpine
-# WORKDIR /app
-# COPY . .
-# RUN npm install
-# ENTRYPOINT npm start
 
-FROM node:lts-alpine
+FROM node:alpine as development
 
-# Instale as dependências necessárias para a compilação de bcrypt
 RUN apk add --no-cache make g++ python3
 
 WORKDIR /app
 
 RUN npm cache clean --force
 
-# Copie apenas os arquivos necessários para instalar as dependências primeiro
 COPY package*.json ./
 
-# Instale as dependências
 RUN npm install
 
-RUN ls -l node_modules/amqp-connection-manager
-
-# Copie o restante do código da aplicação
 COPY . .
 
 RUN npx prisma migrate dev --name 'initial migration'
