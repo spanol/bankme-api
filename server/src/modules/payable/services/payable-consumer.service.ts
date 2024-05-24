@@ -48,7 +48,7 @@ export class PayableConsumerService implements OnModuleInit {
       service: 'gmail',
       auth: {
         user: 'random@gmail.com',
-        pass: 'Vini1234spanol@',
+        pass: 'senhasecreta',
       },
     });
 
