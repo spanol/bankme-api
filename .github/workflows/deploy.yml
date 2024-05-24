@@ -57,7 +57,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
             cd server
-            docker-compose pull
+            docker-compose pull spanol/server:latest
             docker-compose down --volumes --remove-orphans
             docker-compose up -d
             docker image prune -f
