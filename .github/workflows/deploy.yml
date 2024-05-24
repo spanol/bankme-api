@@ -1,14 +1,20 @@
 name: Docker Build and Deploy to AWS ECS
 
 on:
-  workflow_dispatch:
   push:
     branches:
-      - master
+      - main
 
 env:
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+  JWT_REFRESH: ${{ secrets.JWT_REFRESH }}
+  CORS_ORIGIN: ${{ secrets.CORS_ORIGIN }}
+  RABBITMQ_URL: ${{ secrets.RABBITMQ_URL }}
+  RABBITMQ_USER: ${{ secrets.RABBITMQ_USER }}
+  RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-  AWS_ACCOUNT_KEY: ${{ secrets.AWS_ACCOUNT_KEY }}
   AWS_REGION: ${{ secrets.AWS_REGION }}
 
 jobs:
@@ -22,13 +28,12 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: Log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-      
+          registry: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+
       - name: Build, tag, and push Docker image to Amazon ECR
         id: build-image
         run: |
