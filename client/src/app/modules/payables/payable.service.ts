@@ -26,7 +26,7 @@ export class PayableService {
   }
 
   updatePayable(id: string, payable: PayableModel): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, payable);
+    return this.http.patch(`${this.apiUrl}/${id}`, payable);
   }
 
   deletePayable(id: string): Observable<any> {
