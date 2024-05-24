@@ -1,46 +1,38 @@
-name: Docker Build and Deploy
+name: Docker Build and Deploy to AWS ECS
 
 on:
   workflow_dispatch:
   push:
     branches:
       - master
+
 env:
-  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-  JWT_SECRET: ${{ secrets.JWT_SECRET }}
-  JWT_REFRESH: ${{ secrets.JWT_REFRESH }}
-  CORS_ORIGIN: ${{ secrets.CORS_ORIGIN }}
-  RABBITMQ_URL: ${{ secrets.RABBITMQ_URL }}
-  RABBITMQ_USER: ${{ secrets.RABBITMQ_USER }}
-  RABBITMQ_PASS: ${{ secrets.RABBITMQ_PASS }}
+  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
 
-      - name: Create .env file
-        run: |
-          touch server/.env
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> server/.env
-          echo "JWT_REFRESH=${{ secrets.JWT_REFRESH }}" >> server/.env
-          echo "CORS_ORIGIN=${{ secrets.CORS_ORIGIN }}" >> server/.env
-          echo "RABBITMQ_URL=${{ secrets.RABBITMQ_URL }}" >> server/.env
-          echo "RABBITMQ_USER=${{ secrets.RABBITMQ_USER }}" >> server/.env
-          echo "RABBITMQ_PASS=${{ secrets.RABBITMQ_PASS }}" >> server/.env
-          
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Build and Push Docker Images
+          registry: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+
+      - name: Build, tag, and push Docker image to Amazon ECR
+        id: build-image
         run: |
-          cd server
-          docker-compose build
-          docker-compose push
+          docker build -t bankme/app ./server
+          docker tag bankme/app:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/bankme/app:latest
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/bankme/app:latest
 
   deploy:
     needs: build
@@ -48,34 +40,20 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Login to github.com
         uses: actions/checkout@v2
-        with:
-          repository: spanol/bankme-api
-          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Deploy to EC2
-        uses: appleboy/ssh-action@master
+      - name: Log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
         with:
-          host: ec2-13-59-11-229.us-east-2.compute.amazonaws.com
-          username: ec2-user
-          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-          script: |
-            # Certifique-se de que o repositório está clonado
-            if [ ! -d "server" ]; then
-              git clone https://github.com/spanol/bankme-api.git server
-            fi
-            cd server
-            git pull origin master
-            docker-compose pull spanol/server:latest
-            docker-compose down --volumes --remove-orphans
-            docker-compose up -d
-            docker image prune -f
+          registry: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+
+      - name: Deploy to Amazon ECS
+        id: deploy-ecs
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ecs-task-def.json
+          service: bankme-service
+          cluster: bankme-cluster
+          container-name: app
+          container-image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/bankme/app:latest
