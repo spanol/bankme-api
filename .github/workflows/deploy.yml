@@ -56,8 +56,8 @@ jobs:
           username: ec2-user
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
-            cd server
             docker-compose pull spanol/server:latest
+            cd server
             docker-compose down --volumes --remove-orphans
             docker-compose up -d
             docker image prune -f
