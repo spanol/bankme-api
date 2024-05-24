@@ -15,7 +15,12 @@ import { DocumentMaskDirective } from '../../../directives/mask-document.directi
 @Component({
   selector: 'app-assignor-edit',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, PhoneMaskDirective, DocumentMaskDirective],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    PhoneMaskDirective,
+    DocumentMaskDirective,
+  ],
   templateUrl: './assignor-edit.component.html',
   styleUrl: './assignor-edit.component.css',
 })
@@ -73,12 +78,14 @@ export class AssignorEditComponent {
   }
 
   onSubmit() {
-    if(!this.assignorForm.valid) {
+    if (!this.assignorForm.valid) {
       return;
     }
-
-    this.assignorService.updateAssignor(this.assignor.id, this.assignorForm.value).subscribe(() => {
-      this.router.navigate(['/assignors', this.assignor.id]);
-    });
+    this.document?.setValue(this.document.value.replace(/\D/g, ''));
+    this.assignorService
+      .updateAssignor(this.assignor.id, this.assignorForm.value)
+      .subscribe(() => {
+        this.router.navigate(['/assignors', this.assignor.id]);
+      });
   }
 }
