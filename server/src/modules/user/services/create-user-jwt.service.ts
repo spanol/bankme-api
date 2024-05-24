@@ -11,8 +11,6 @@ type CreateUserJwtServiceResponse = Either<
 
 @Injectable()
 export class CreateUserJwtService {
-  private readonly logger = new Logger(CreateUserJwtService.name);
-
   constructor(private jwtService: JwtService) {}
 
   async execute(user: User): Promise<CreateUserJwtServiceResponse> {
@@ -26,7 +24,6 @@ export class CreateUserJwtService {
         access_token: await this.jwtService.signAsync(payload),
       });
     } catch (e) {
-      this.logger.error(e);
       return left(new InvalidJwtProvidedException());
     }
   }

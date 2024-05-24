@@ -20,6 +20,7 @@ export class UpdatePayableService {
     }
 
     payable.value = value ?? payable.value;
+    payable.emissionDate = new Date().toISOString();
 
     await this.repository.save(payable);
 
