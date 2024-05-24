@@ -1,4 +1,4 @@
-<ul>
+<div class="list-wrapper">
   <ng-container *ngIf="payables.length === 0; else list">
     <div class="title">
       <h1>No payables found</h1>
@@ -15,10 +15,9 @@
 
         <button routerLink="/payables/new" class="button">Add +</button>
       </div>
-      <!-- add in mass -->
-      <div class="list-card-header">
+      <!-- <div class="list-card-header">
         <button class="button">Add in mass</button>
-      </div>
+      </div> -->
       <ng-container
         *ngFor="
           let payable of payables
@@ -27,10 +26,17 @@
       >
         <div class="list-card" [routerLink]="['/payables', payable.id]">
           <div class="payable-data">
-            <p>id: {{ payable.id }}</p>
-            <div class="payable-info">
-              <p>{{ payable.value | currency : "BRL" }} -
-              {{ payable.emissionDate | date : "dd/MM/yyyy" }}</p> 
+            <p>ID: {{ payable.id }}</p>
+
+            <div class="payable-infos">
+              <p>
+                Valor:
+                <strong class="budget">
+                  {{ payable.value | currency : "BRL" }}
+                </strong>
+              </p>
+              -
+              <p>{{ payable.emissionDate | date : "dd/MM/yyyy" }}</p>
             </div>
           </div>
 
@@ -55,4 +61,4 @@
       (pageChange)="actualPage = $event"
     ></pagination-controls>
   </ng-template>
-</ul>
+</div>

@@ -54,11 +54,17 @@ export class PayableEditComponent implements OnInit {
       this.payable = data;
       this.payableForm.patchValue({
         value: this.payable.value,
-        emissionDate: this.payable.emissionDate,
+        emissionDate: new Date(this.payable.emissionDate)
+          .toISOString()
+          .split('T')[0],
         assignorName: this.payable.assignor.name,
         assignorEmail: this.payable.assignor.email,
         assignorId: this.payable.assignor.id,
       });
+
+
+      this.assignorEmail?.disable();
+      this.assignorName?.disable();
       console.log(this.payableForm.value);
     });
   }
@@ -68,7 +74,6 @@ export class PayableEditComponent implements OnInit {
     this.router.navigate(['/payables']);
   }
 
-
   get value() {
     return this.payableForm.get('value');
   }
@@ -77,8 +82,12 @@ export class PayableEditComponent implements OnInit {
     return this.payableForm.get('emissionDate');
   }
 
-  get email() {
-    return this.payableForm.get('email');
+  get assignorEmail() {
+    return this.payableForm.get('assignorEmail');
+  }
+
+  get assignorName() {
+    return this.payableForm.get('assignorName');
   }
 
   get assignorId() {
@@ -86,16 +95,17 @@ export class PayableEditComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.payableForm.valid) {
-      // this.payableService.updatePayable(this.payableForm.value).subscribe({
-      //   next: () => {
-      //     this.alertsService.showSuccess('Payable updated successfully');
-      //   },
-      //   error: () => {
-      //     this.alertsService.showError('Failed to update payable');
-      //   },
-      // });
-    }
-  }
+    if (this.payableForm.valid) return;
 
+      this.payableService
+        .updatePayable(this.payable.id, this.payableForm.value)
+        .subscribe({
+          next: () => {
+            this.alertsService.success('Payable updated successfully');
+          },
+          error: () => {
+            this.alertsService.error('Failed to update payable');
+          },
+        });
+  }
 }

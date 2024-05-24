@@ -18,18 +18,20 @@
       *ngIf="value?.invalid && (value?.dirty || value?.touched)"
     >
       <span *ngIf="value?.errors?.['required']">Value is required.</span>
-      <span *ngIf="value?.errors?.['min']">Value must be a positive value.</span>
+      <span *ngIf="value?.errors?.['min']"
+        >Value must be a positive value.</span
+      >
     </div>
   </div>
 
   <div class="input-wrapper">
-    <label for="email">email</label>
+    <label for="email">Assignor email</label>
     <input
       class="input"
       id="email"
       type="email"
       formControlName="assignorEmail"
-      [ngClass]="{ error: email?.invalid && email?.touched }"
+      [ngClass]="{ error: assignorEmail?.invalid && assignorEmail?.touched }"
     />
 
     <div
@@ -37,7 +39,29 @@
       *ngIf="value?.invalid && (value?.dirty || value?.touched)"
     >
       <span *ngIf="value?.errors?.['required']">Value is required.</span>
-      <span *ngIf="value?.errors?.['min']">Value must be a positive value.</span>
+      <span *ngIf="value?.errors?.['min']"
+        >Value must be a positive value.</span
+      >
+    </div>
+  </div>
+
+  <div class="input-wrapper">
+    <label for="name">Assignor name</label>
+    <input
+      class="input"
+      id="name"
+      type="text"
+      formControlName="assignorName"
+      [ngClass]="{ error: assignorName?.invalid && assignorName?.touched }"
+    />
+
+    <div
+      class="error-message"
+      *ngIf="assignorName?.invalid && assignorName?.touched"
+    >
+      <span *ngIf="assignorName?.errors?.['required']"
+        >Assignor name is required.</span
+      >
     </div>
   </div>
 
