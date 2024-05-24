@@ -31,7 +31,6 @@ export class PrismaPayableRepository implements PayableRepository {
     const payables = await this.prisma.payable.findMany({
       include: { assignor: true },
     });
-    console.log(payables);
 
     return payables.map((payable) =>
       PrismaPayableMapper.toDomain(payable, payable.assignor),
@@ -43,8 +42,6 @@ export class PrismaPayableRepository implements PayableRepository {
       where: { id: itemId },
       include: { assignor: true },
     });
-
-    console.log(payable);
 
     return PrismaPayableMapper.toDomain(payable, payable.assignor);
   }
