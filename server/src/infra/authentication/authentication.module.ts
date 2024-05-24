@@ -7,6 +7,7 @@ import { CryptoModule } from '@infra/crypto/crypto.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthenticateUserService } from '@modules/user/services/authenticate-user.service';
+import { RefreshTokenStrategy } from './strategies/refresh-token.strategy';
 
 @Module({
   imports: [
@@ -19,12 +20,18 @@ import { AuthenticateUserService } from '@modules/user/services/authenticate-use
       useFactory: async (configService: ConfigService) => {
         return {
           secret: configService.get<string>('JWT_SECRET'),
+          signOptions: { expiresIn: '60s' },
         };
       },
       inject: [ConfigService],
     }),
   ],
   exports: [JwtModule],
-  providers: [LocalStrategy, JwtStrategy, AuthenticateUserService],
+  providers: [
+    LocalStrategy,
+    JwtStrategy,
+    RefreshTokenStrategy,
+    AuthenticateUserService,
+  ],
 })
 export class AuthenticationModule {}
