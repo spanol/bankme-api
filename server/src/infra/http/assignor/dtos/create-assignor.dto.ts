@@ -3,7 +3,7 @@ import { IsString, MaxLength, IsEmail } from 'class-validator';
 
 export class CreateAssignorDto {
   @IsString()
-  @MaxLength(30)
+  @MaxLength(14)
   @ApiProperty()
   document: string;
 

@@ -4,6 +4,7 @@ import { AssignorRepository } from '@modules/assignor/repositories/assignor.repo
 import { CreatePayableDto } from '@infra/http/payable/dtos/create-payable.dto';
 import { Payable } from '../entities/payable.entity';
 import { Either, left, right } from '@utils/either';
+import { Assignor } from '@modules/assignor/entities/assignor.entity';
 
 type CreatePayableServiceResponse = Either<Error, Payable>;
 
@@ -18,11 +19,11 @@ export class CreatePayableService {
     userId: string,
     createPayableDto: CreatePayableDto,
   ): Promise<CreatePayableServiceResponse> {
-    const { value, emissionDate, assignorEmail } = createPayableDto;
+    const { value, emissionDate, assignorId } = createPayableDto;
 
     console.log(createPayableDto);
 
-    const assignor = await this.assignorRepository.findByEmail(assignorEmail);
+    const assignor = await this.assignorRepository.findById(assignorId);
 
     console.log(assignor);
 
@@ -36,6 +37,8 @@ export class CreatePayableService {
       assignor,
       emissionDate: new Date(emissionDate).toISOString(),
     });
+
+    console.log(payable);
 
     await this.repository.create(payable);
 
